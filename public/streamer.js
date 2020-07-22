@@ -20,9 +20,6 @@ const configuration = {
 const socket = io.connect(window.location.origin);
 //const socket = io.connect();
 
-// Starting the stream
-startVideo();
-
 /** Function that will get the Streamer's camera */
 async function startVideo() {
   console.log("Requesting Local Media");
@@ -42,6 +39,10 @@ async function startVideo() {
     console.error(`Error getting local media: ${err}`);
   }
 }
+
+// Starting the stream
+startVideo();
+
 
 socket.on("sdp_answer", (id, description) => {
   peerConnections[id].setRemoteDescription(description);

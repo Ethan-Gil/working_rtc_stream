@@ -26,10 +26,10 @@ io.sockets.on("connection", (socket) => {
   socket.on("disconnect_peer", () => {
     socket.to(streamer).emit("disconnect_peer", socket.id);
   });
-  socket.on("sdp_offer", (id, message) => {
+  socket.on("sdp_offer", (id, description) => {
     socket.to(id).emit("sdp_offer", socket.id, description);
   });
-  socket.on("sdp_answer", (id, message) => {
+  socket.on("sdp_answer", (id, description) => {
     socket.to(id).emit("sdp_answer", socket.id, description);
   });
   socket.on("ice_candidate", (id, message) => {
