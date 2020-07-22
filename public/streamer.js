@@ -44,10 +44,6 @@ async function startVideo() {
 startVideo();
 
 
-socket.on("sdp_answer", (id, description) => {
-  peerConnections[id].setRemoteDescription(description);
-});
-
 // When a viewer wants to watch the stream.
 socket.on("watch_stream", (id) => {
   // Creating a new Peer Connection
@@ -77,6 +73,10 @@ socket.on("watch_stream", (id) => {
     .then(() => {
       socket.emit("sdp_offer", id, peerConnection.localDescription);
     });
+});
+
+socket.on("sdp_answer", (id, description) => {
+  peerConnections[id].setRemoteDescription(description);
 });
 
 // Adding an Ice Candidate
