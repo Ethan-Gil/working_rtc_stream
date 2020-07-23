@@ -30,6 +30,7 @@ socket.on("sdp_offer", (id, description) => {
     .then((sdp) => peerConnection.setLocalDescription(sdp))
     .then(() => {
       socket.emit("sdp_answer", id, peerConnection.localDescription);
+      console.log("Viewer - SDP offer from streamer recieved.");
     });
 
   // Getting the stream video and assigning it to the html video element
@@ -41,6 +42,7 @@ socket.on("sdp_offer", (id, description) => {
   peerConnection.onicecandidate = (event) => {
     if (event.candidate) {
       socket.emit("ice_candidate", id, event.candidate);
+      console.log("Viewer IceCandidate");
     }
   };
 });

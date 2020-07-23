@@ -43,11 +43,13 @@ async function startVideo() {
 // Starting the stream
 startVideo();
 
-
 // When a viewer wants to watch the stream.
 socket.on("watch_stream", (id) => {
   // Creating a new Peer Connection
   const peerConnection = new RTCPeerConnection(configuration);
+  console.log(
+    `Streamer RTCPeerConnection created. Configuration: ${configuration}`
+  );
 
   // Saving it into the list of Peer Connections
   peerConnections[id] = peerConnection;
@@ -64,6 +66,7 @@ socket.on("watch_stream", (id) => {
     if (event.candidate) {
       socket.emit("ice_candidate", id, event.candidate);
     }
+    console.log("Streamer ICECandidate");
   };
 
   // SDP Offer Step
@@ -72,11 +75,13 @@ socket.on("watch_stream", (id) => {
     .then((sdp) => peerConnection.setLocalDescription(sdp))
     .then(() => {
       socket.emit("sdp_offer", id, peerConnection.localDescription);
+      console.log("Streamer SDP offer sent to viewer");
     });
 });
 
 socket.on("sdp_answer", (id, description) => {
   peerConnections[id].setRemoteDescription(description);
+  console.log("Streamer - SDP answer recieved from viewer.");
 });
 
 // Adding an Ice Candidate
