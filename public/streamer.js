@@ -81,7 +81,7 @@ socket.on("watch_stream", (id) => {
 
 socket.on("sdp_answer", (id, description) => {
   peerConnections[id].setRemoteDescription(description);
-  console.log("Streamer - SDP answer recieved from viewer.");
+  console.log(`Streamer - SDP answer recieved from viewer. ID: ${id}`);
 });
 
 // Adding an Ice Candidate
