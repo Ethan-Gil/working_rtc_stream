@@ -13,12 +13,16 @@ const config = {
   ],
 };
 
-const socket = io.connect(window.location.origin);
+//const socket = io.connect(window.location.origin);
+const socket = io.connect();
 
 const videoElementHTML = document.querySelector("video");
 
-// SDP Offer Step
+// SDP Offer & ICE Candidate
+// This occurs when the Streamer sends an SDP offer
+// We will reply with an SDP answer
 socket.on("sdp_offer", (id, description) => {
+
   // Creating a new RTC Peer Connection
   peerConnection = new RTCPeerConnection(config);
 
@@ -30,27 +34,31 @@ socket.on("sdp_offer", (id, description) => {
     .then((sdp) => peerConnection.setLocalDescription(sdp))
     .then(() => {
       socket.emit("sdp_answer", id, peerConnection.localDescription);
-      console.log("Viewer - SDP offer from streamer recieved.");
+      console.log("Viewer - SDP offer from streamer recieved. Answer sent to streamer.");
     });
 
   // Getting the stream video and assigning it to the html video element
   peerConnection.ontrack = (event) => {
     videoElementHTML.srcObject = event.streams[0];
+    console.log("Viewer - Video stream recieved.")
   };
 
-  // ICE Candidate Step
+  // ICE Candidate Event Handler
   peerConnection.onicecandidate = (event) => {
     if (event.candidate) {
       socket.emit("ice_candidate", id, event.candidate);
-      console.log("Viewer IceCandidate");
+      console.log("(1) Viewer ICECandidate Event Recieved");
     }
   };
 });
 
+// ICE Candidate signal handler
 socket.on("ice_candidate", (id, candidate) => {
   peerConnection
     .addIceCandidate(new RTCIceCandidate(candidate))
     .catch((err) => console.error(err));
+
+  console.log("(2) Viewer ICECandidate added")
 });
 
 // When a viewer connects, automatically begin the process to watch the stream
