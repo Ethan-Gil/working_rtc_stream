@@ -18,7 +18,7 @@ const configuration = {
 };
 
 //const socket = io.connect(window.location.origin);
-const socket = io.connect();
+const socket = io.connect("fw.gameclient.me:4000");
 
 /** Function that will get the streamer's camera and begin the stream */
 async function startVideo() {
@@ -91,6 +91,8 @@ socket.on("ice_candidate", (id, candidate) => {
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
   console.log("(2) Streamer ICECandidate added")
 });
+
+// todo: stopStream()
 
 // Closing the connection when a client disconnects and removing them from the list of peers
 socket.on("disconnect_peer", (id) => {

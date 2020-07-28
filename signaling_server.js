@@ -16,6 +16,7 @@ app.use(express.static(__dirname + "/public"));
 let streamer;
 
 io.sockets.on("connection", (socket) => {
+  
   socket.on("stream_online", () => {
     streamer = socket.id;
     socket.broadcast.emit("stream_online");
