@@ -4,6 +4,7 @@
 
 // The actual html video element that will play the stream
 const videoElementHTML = document.querySelector("video");
+let stream;
 
 // The list of peer connections
 const peerConnections = {};
@@ -18,7 +19,8 @@ const configuration = {
 };
 
 //const socket = io.connect(window.location.origin);
-const socket = io.connect("fw.gameclient.me:4000");
+//const socket = io.connect("fw.gameclient.me:4000");
+const socket = io.connect();
 
 /** Function that will get the streamer's camera and begin the stream */
 async function startVideo() {

@@ -14,7 +14,8 @@ const config = {
 };
 
 //const socket = io.connect(window.location.origin);
-const socket = io.connect("fw.gameclient.me:4000");
+//const socket = io.connect("fw.gameclient.me:4000");
+const socket = io.connect();
 
 const videoElementHTML = document.querySelector("video");
 
