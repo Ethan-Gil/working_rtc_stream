@@ -18,7 +18,6 @@ const configuration = {
   ],
 };
 
-//const socket = io.connect(window.location.origin);
 //const socket = io.connect("fw.gameclient.me:4000");
 const socket = io.connect();
 
